@@ -1,0 +1,57 @@
+########## 컨버팅 관련 정보 ##########
+# origin - 현재 모델 형식 (pytorch, pb, onnx)
+# target - 바꿀 모델 형식 (pb, onnx, tensorrt, tensorlite)
+origin: onnx
+target: tensorrt
+
+########## 루트 경로 설정 ##########
+root:
+  pytorch: ./Torch
+  onnx: ./Onnx
+  tensorflow: ./TensorFlow
+  tensorrt: ./TensorRT
+  tensorlite: ./TensorLite
+
+########## 모델 세부 설정 ##########
+pytorch:
+  name: BSRGAN
+  path: BSRGAN.pth
+
+onnx:
+  path: bsrgan.onnx
+  input_batch: 1
+  input_channels: 3
+  input_width: 960
+  input_height: 540
+  version: 11
+
+tensorrt:
+  path: bsrgan2.trt
+  int8_apply: True
+  capacity_memory: 2
+  save: True
+  cali_path: ./DIV2K_test_HR
+
+tensorflow:
+  path: bsrgan_tf
+  save: True
+
+tensorlite:
+  path: bsrgan.tflite
+  save: True
+
+########## 파이토치 모델 설정 ##########
+LDSR:
+  scale_factor: 3
+  num_channels: 3
+  d: 128
+  m: 16
+HSDSR:
+  scale_factor: 4
+  num_channels: 3
+  d: 128
+  m: 16
+HSDSR_DENSE:
+  scale_factor: 4
+BSRGAN:
+  scale_factor: 4

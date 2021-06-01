@@ -6,11 +6,11 @@ Last Update : 2021-05-27
 """
 
 # 파이토치 모델 관련 모듈
-from Maker.models import LDSR, BSRGAN, HSDSR, HSDSR_DENSE
+from Maker.models import BSRGAN
 
 # 파일 및 시스템 관련 모듈
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "3"
+# os.environ["CUDA_VISIBLE_DEVICES"] = "3"
 
 # 파이토치 관련 모듈
 import torch
@@ -22,50 +22,29 @@ class Main():
 
     def making(self):
         """ ONNX를 만드는 일련의 과정 """
-        self.setTorchModel()
-        self.setInputSize()
+        if self.opt["custom_mode"]:
+            self.customMaking(self.opt["custom_model"], self.opt["custom_input_tensor"])            
+        else:
+            self.setTorchModel()
+            self.setInputSize()
+            self.convertONNX()            
+
+    def customMaking(self, model, input_tensor):
+        """ 사용자 정의 모델을 사용하는 경우 """
+        self.setTorchModel(model)
+        self.setInputSize(input_tensor)
         self.convertONNX()
 
     def setTorchModel(self, model=None):
         """ 파이토치 모델 등록 """
-        # 현재 모델은 LDSR만 적용 가능 추후 추가 예정
+        # 현재 모델은 BSRGAN만 적용 가능 추후 추가 예정
+        # 모델을 받아오면 그대로 사용하고 없으면 새로 지정하고 불러오기
         if model==None:
-            if self.opt["pytorch"]["name"] == "LDSR":
-                self.model = LDSR(self.opt["LDSR"]["scale_factor"])
-
-                # 모델 파라미터 불러오기
-                state_dict = self.model.state_dict()
-                for n, p in torch.load(os.path.join(self.opt["root"]["pytorch"], self.opt["pytorch"]["path"]), map_location=lambda storage, loc: storage).items():
-                    if n in state_dict.keys():
-                        state_dict[n].copy_(p)
-                    else:
-                        raise KeyError(n)
-
-            elif self.opt["pytorch"]["name"] == "HSDSR":
-                self.model = HSDSR(self.opt["HSDSR"]["scale_factor"])
-
-                # 모델 파라미터 불러오기
-                state_dict = self.model.state_dict()
-                for n, p in torch.load(os.path.join(self.opt["root"]["pytorch"], self.opt["pytorch"]["path"]), map_location=lambda storage, loc: storage)["model_state_dict"].items():
-                    if n in state_dict.keys():
-                        state_dict[n].copy_(p)
-                    else:
-                        raise KeyError(n)
-
-            elif self.opt["pytorch"]["name"] == "HSDSR_DENSE":
-                self.model = HSDSR_DENSE(self.opt["HSDSR_DENSE"]["scale_factor"])
-
-                # 모델 파라미터 불러오기
-                state_dict = self.model.state_dict()
-                for n, p in torch.load(os.path.join(self.opt["root"]["pytorch"], self.opt["pytorch"]["path"]), map_location=lambda storage, loc: storage).items():
-                    if n in state_dict.keys():
-                        state_dict[n].copy_(p)
-                    else:
-                        raise KeyError(n)
-
-            elif self.opt["pytorch"]["name"] == "BSRGAN":
+            if self.opt["pytorch"]["name"] == "BSRGAN":
                 self.model = BSRGAN(in_nc=3, out_nc=3, nf=64, nb=23, gc=32, sf=self.opt["BSRGAN"]["scale_factor"])
                 self.model.load_state_dict(torch.load(os.path.join(self.opt["root"]["pytorch"], self.opt["pytorch"]["path"])), strict=True)
+        else:
+            self.model = model
 
     def setInputSize(self, input_tensor=None):
         """ 입력 이미지 크기 및 형태 설정 """
@@ -76,10 +55,9 @@ class Main():
         self.channels = self.opt["onnx"]["input_channels"]
 
         # 입력 토치텐서 생성 전달받은 텐서가 있으면 그대로 사용
-        if input_tensor == None:        
-            if self.opt["pytorch"]["name"] == "LDSR" or self.opt["pytorch"]["name"] == "HSDSR" or self.opt["pytorch"]["name"] == "HSDSR_DENSE":
-                self.input_tensor = torch.randn(self.input_batch, self.height, self.width, self.channels, dtype=torch.float32)
-            elif self.opt["pytorch"]["name"] == "BSRGAN":
+        # 여기서 모델 ONNX 입력 형식을 지정합니다.
+        if input_tensor == None:
+            if self.opt["pytorch"]["name"] == "BSRGAN":
                 self.input_tensor = torch.randn(self.input_batch, self.channels, self.height, self.width, dtype=torch.float32)
         else:
             self.input_tensor = input_tensor

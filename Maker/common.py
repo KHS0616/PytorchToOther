@@ -1,3 +1,9 @@
+"""
+TensorRT 양자화 관련 모듈
+
+Writer : KHS0616
+Last Update 2021-06-01
+"""
 from itertools import chain
 import argparse
 import os

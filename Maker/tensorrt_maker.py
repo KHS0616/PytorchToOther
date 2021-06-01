@@ -5,7 +5,7 @@ Writer : KHS0616
 Last Update : 2021-05-27
 """
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "3"
+# os.environ["CUDA_VISIBLE_DEVICES"] = "3"
 
 # TensorRT 관련 모듈 및 라이브러리 가져오기
 import tensorrt as trt

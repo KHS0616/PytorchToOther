@@ -29,6 +29,12 @@ if __name__ == '__main__':
     module_name = "Maker." + opt["target"] + "_maker"
     module = importlib.import_module(module_name)
 
+    ########## 추가 설정 부분 ##########
+    if opt["custom_mode"]:
+        opt["custom_model"] = ""
+        opt["custom_input_tensor"] = ""
+    ###################################
+
     # 모델의 메인함수 객체 생성하기
     FC = getattr(module, "Main")
     finc = FC(opt)

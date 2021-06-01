@@ -1,8 +1,10 @@
 ########## 컨버팅 관련 정보 ##########
 # origin - 현재 모델 형식 (pytorch, pb, onnx)
 # target - 바꿀 모델 형식 (pb, onnx, tensorrt, tensorlite)
+# custom_mode - 사용자 지정 모델 사용 여부
 origin: onnx
 target: tensorrt
+custom_mode: False
 
 ########## 루트 경로 설정 ##########
 root:
@@ -41,17 +43,5 @@ tensorlite:
   save: True
 
 ########## 파이토치 모델 설정 ##########
-LDSR:
-  scale_factor: 3
-  num_channels: 3
-  d: 128
-  m: 16
-HSDSR:
-  scale_factor: 4
-  num_channels: 3
-  d: 128
-  m: 16
-HSDSR_DENSE:
-  scale_factor: 4
 BSRGAN:
   scale_factor: 4

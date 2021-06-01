@@ -116,7 +116,6 @@ dmypy.json
 # Customize
 Inference/*.png
 *.pth
-Tensorflow/
 *.tflite
 *.onnx
 *.trt

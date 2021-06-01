@@ -6,7 +6,7 @@ Last Update : 2021-05-27
 """
 # 경로 및 시스템 관련 모듈
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "3"
+# os.environ["CUDA_VISIBLE_DEVICES"] = "3"
 
 # Tensorflow & TensorLite 관련 모듈
 import tensorflow as tf

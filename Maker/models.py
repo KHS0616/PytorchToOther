@@ -1,14 +1,22 @@
+"""
+ONNX를 생성하기 위해 모델 구조를 정의하는 모듈
+해당 모듈에는 기본적으로 제공하는 모델의 구조가 정의되어 있습니다.
+이 외의 모델을 적용시키려면 다른 모델을 직접 불러오거나 이 곳에 코드를 추가하세요
+
+Writer : KHS0616
+Last Update : 2021-06-01
+"""
+# 파이토치 관련 모듈 가져오기
 import torch
 import torch.nn as nn
-import math
-
-####################################################
-
-import functools
 import torch.nn.functional as F
 import torch.nn.init as init
 
+# 연산 관련 모듈 가져오기
+import math
+import functools
 
+##################### BSRGAN ########################
 def initialize_weights(net_l, scale=1):
     if not isinstance(net_l, list):
         net_l = [net_l]
@@ -104,3 +112,4 @@ class BSRGAN(nn.Module):
         out = self.conv_last(self.lrelu(self.HRconv(fea)))
 
         return out
+###########################################################

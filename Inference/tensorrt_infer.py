@@ -1,3 +1,9 @@
+"""
+TensorRT 추론 모듈
+
+Writer : KHS0616
+Last Update : 2021-06-01
+"""
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "3"
 
@@ -97,19 +103,25 @@ def inference(trt_path):
     trt_engine = TRTEngine(trt_path)
     
     for _ in range(1):
+        # 이미지 불러오기
         img = cv2.imread("00001.png").astype(np.float32)
+
+        # 전처리
         lr = cv2.resize(img, (960, 540), interpolation=cv2.INTER_CUBIC)
         lr = np.expand_dims(lr.transpose(2,0,1)/255., axis=0)
-        print(lr.shape)
+
+        # TensorRT 입력을 위한 형변환 및 형태변환
         lr = lr.astype(trt.nptype(trt.float32)).ravel()
-        print(lr.shape)
+
+        # 추론 및 형태복원
         sr = np.reshape(trt_engine.do_inference(lr), (1, 3, 2160, 3840))
-        print(sr.shape)
+
+        # 후처리
         sr = sr.squeeze(0).transpose(1, 2, 0)*255.
-        print(sr.shape)
 
         # 결과 저장
         cv2.imwrite("test.png", sr.astype(np.uint8))
 
 if __name__ == '__main__':
+    # TensorRT 경로를 매개변수로 전달하여 추론함수 실행
     inference("../TensorRT/bsrgan2.trt")

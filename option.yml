@@ -40,6 +40,8 @@ tensorflow:
 
 tensorlite:
   path: bsrgan.tflite
+  int8_full: True
+  cali_path: ./DIV2K_test_HR
   save: True
 
 ########## 파이토치 모델 설정 ##########

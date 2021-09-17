@@ -1,6 +1,6 @@
 ########## 컨버팅 관련 정보 ##########
-# origin - 현재 모델 형식 (pytorch, pb, onnx)
-# target - 바꿀 모델 형식 (pb, onnx, tensorrt, tensorlite)
+# origin - 현재 모델 형식 (pytorch, tensorflow, onnx)
+# target - 바꿀 모델 형식 (tensorflow, onnx, tensorrt, tensorlite)
 # custom_mode - 사용자 지정 모델 사용 여부
 origin: pytorch
 target: tensorlite

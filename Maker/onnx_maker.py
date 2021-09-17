@@ -1,8 +1,7 @@
 """
 Pytorch 모델을 ONNX 모델로 변환하는 모듈
-
 Writer : KHS0616
-Last Update : 2021-05-27
+Last Update : 2021-09-17
 """
 
 # 파이토치 모델 관련 모듈
@@ -72,4 +71,5 @@ class Main():
                     do_constant_folding=True,  # 최적하시 상수폴딩을 사용할지의 여부
                     input_names = ['input'],   # 모델의 입력값을 가리키는 이름
                     output_names = ['output'], # 모델의 출력값을 가리키는 이름
-                    )
+                    dynamic_axes = {"input": {2: "input_height", 3: "input_width"}, "output": { 2: "output_height", 3: "output_width" }}
+        )

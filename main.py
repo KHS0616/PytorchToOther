@@ -8,17 +8,20 @@
 4. tflite 파일 (Tensorflow Lite)
 
 Writer : KHS0616
-Last Update : 2021-05-27
+Last Update : 2021-09-17
 """
 # GPU 설정
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "3"
+os.environ["CUDA_VISIBLE_DEVICES"] = "2"
 
 # 옵션 파일 yml 사용을 위한 라이브러리
 import yaml
 
 # 옵션 값에 따른 실행 모듈을 가져오기 위한 라이브러리
 import importlib
+
+# 텐서 지정을 위한 라이브러리
+import torch
 
 ########## 메인 실행 구문 ##########
 if __name__ == '__main__':

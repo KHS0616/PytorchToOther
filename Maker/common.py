@@ -1,6 +1,5 @@
 """
 TensorRT 양자화 관련 모듈
-
 Writer : KHS0616
 Last Update 2021-06-01
 """
@@ -34,12 +33,10 @@ def add_help(description):
 def find_sample_data(description="Runs a TensorRT Python sample", subfolder="", find_files=[]):
     '''
     Parses sample arguments.
-
     Args:
         description (str): Description of the sample.
         subfolder (str): The subfolder containing data relevant to this sample
         find_files (str): A list of filenames to find. Each filename will be replaced with an absolute path.
-
     Returns:
         str: Path of data directory.
     '''
@@ -68,14 +65,11 @@ def locate_files(data_paths, filenames):
     """
     Locates the specified files in the specified data directories.
     If a file exists in multiple data directories, the first directory is used.
-
     Args:
         data_paths (List[str]): The data directories.
         filename (List[str]): The names of the files to find.
-
     Returns:
         List[str]: The absolute paths of the files.
-
     Raises:
         FileNotFoundError if a file could not be located.
     """

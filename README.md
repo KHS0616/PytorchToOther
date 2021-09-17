@@ -15,6 +15,11 @@
 origin 옵션 값은 현재 파일 형태, target 옵션 값은 변환할 파일 형태 입니다.  
 origin, target 지원하는 형식은 아래 주석의 괄호 내용과 같습니다.  
 사용자가 정의한 모델을 사용하는 경우 cusrom_mode 값을 True 값으로 설정하세요
+
+2. 모델 정보 입력  
+모델을 다른 형태로 Convert 하기 위해서는 모델 전체 코드를 입력해야 합니다.  
+Maker 내부 models.py 파일에 모델에 대한 정보를 입력하고 main.py 코드에 모델 객체와 텐서를 저장시킵니다.  
+
 ```
 ########## 컨버팅 관련 정보 ##########
 # origin - 현재 모델 형식 (pytorch, pb, onnx)
@@ -50,9 +55,11 @@ root:
 ```python
 <main.py>
 ########## 추가 설정 부분 ##########
+from models import TEST
+test = TEST()
 if opt["custom_mode"]:
-    opt["custom_model"] = ""
-    opt["custom_input_tensor"] = ""
+    opt["custom_model"] = test
+    opt["custom_input_tensor"] = torch.rand(1)
 ###################################
 ```
 
@@ -105,9 +112,11 @@ tensorflow:
 
 + TensorLite  
 Tensorlite 파일 경로를 설정합니다.  
-추가적인 양자화 기법은 추후 추가예정입니다.  
+양자화 기법 사용여부 결정 및 Cali 데이터 셋 경로 설정  
 ```
 tensorlite:
   path: bsrgan.tflite
+  int8_full: True
+  cali_path: ./DIV2K_test_HR
   save: True
 ```

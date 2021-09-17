@@ -2,8 +2,8 @@
 # origin - 현재 모델 형식 (pytorch, pb, onnx)
 # target - 바꿀 모델 형식 (pb, onnx, tensorrt, tensorlite)
 # custom_mode - 사용자 지정 모델 사용 여부
-origin: onnx
-target: tensorrt
+origin: pytorch
+target: tensorlite
 custom_mode: False
 
 ########## 루트 경로 설정 ##########
@@ -16,34 +16,41 @@ root:
 
 ########## 모델 세부 설정 ##########
 pytorch:
-  name: BSRGAN
-  path: BSRGAN.pth
+  name: LDSR
+  path: LDSR_x2_16x128.pth
 
 onnx:
-  path: bsrgan.onnx
+  path: LDSR_x2_16x128_50x50.onnx
   input_batch: 1
   input_channels: 3
-  input_width: 960
-  input_height: 540
+  input_width: 50
+  input_height: 50
   version: 11
 
 tensorrt:
-  path: bsrgan2.trt
+  path: LDSR_x2_16x128.trt
   int8_apply: True
   capacity_memory: 2
   save: True
   cali_path: ./DIV2K_test_HR
 
 tensorflow:
-  path: bsrgan_tf
+  path: LDSR_x2_16x128_50x50
   save: True
 
 tensorlite:
-  path: bsrgan.tflite
+  path: LDSR_x2_16x128_50x50.tflite
   int8_full: True
   cali_path: ./DIV2K_test_HR
   save: True
 
 ########## 파이토치 모델 설정 ##########
+LDSR:
+  scale_factor: 2
+  num_channels: 3
+  d: 128
+  m: 16
 BSRGAN:
   scale_factor: 4
+FSRCNN:
+  scale_factor: 3
